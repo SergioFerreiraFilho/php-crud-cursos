@@ -37,3 +37,20 @@ VALUES
 ('Alessandro','Rua barca semi nova 123', 'HTML, CSS, JS, React', true, '12345612345'),
 ('Allan','Rua idelfonso albano 222, ap 1403', 'SABE TUDO, BRABISSIMO', true, '99999999999'),
 ('Gleidson', 'Rua oscar frança 88', 'Formado nas ruas', true, '22222222222');
+
+CREATE TABLE tb_categorias (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(45) NOT NULL,
+    formacao VARCHAR(45) NOT NULL,
+    status TINYINT NOT NULL
+);
+
+INSERT INTO tb_categorias
+(tipo, formacao, status)
+VALUES
+('Linguagem','FullStack', true),
+('Edição','Designer', true),
+('Publicidade','Marketing', true);
+
+
+
