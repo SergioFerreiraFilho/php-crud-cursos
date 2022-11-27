@@ -2,7 +2,7 @@
     <h1>Gerenciar Cursos</h1>
 
     <div class="mt-2">
-        <a href="/cursos/novo" class="btn btn-outline-dark btn-sm">Novo Aluno</a>
+        <a href="/cursos/novo" class="btn btn-outline-dark btn-sm">Novo Curso</a>
 
         <a href="/cursos/relatorio" class="btn btn-outline-dark btn-sm">Gerar PDF</a>
     </div>
@@ -19,18 +19,16 @@
         </thead>
         <tbody>
             <?php
-                // if(isset($alunos) && sizeOf($alunos) > 0){
-                    foreach ($alunos ?? [] as $aluno) {
+                    foreach ($cursos ?? [] as $curso) {
                         echo "
                             <tr>
-                                <td>{$aluno->id}</td>
-                                <td>{$aluno->nome}</td>
-                                <td>{$aluno->matricula}</td>
-                                <td>{$aluno->cpf}</td>
-                                <td>{$aluno->email}</td>
+                                <td>{$curso->id}</td>
+                                <td>{$curso->nome}</td>
+                                <td>{$curso->categoria}</td>
+                                <td>{$curso->cargaHoraria}</td>
                                 <td>
-                                    <a href='/alunos/editar?id={$aluno->id}' class='btn btn-outline-warning btn-sm'>Editar</a>
-                                    <a href='/alunos/excluir?id={$aluno->id}' class='btn btn-outline-danger btn-sm'>Excluir</a>
+                                    <a href='/cursos/editar?id={$curso->id}' class='btn btn-outline-warning btn-sm'>Editar</a>
+                                    <a href='/cursos/excluir?id={$curso->id}' class='btn btn-outline-danger btn-sm'>Excluir</a>
                                 </td>
                             </tr>
                         ";

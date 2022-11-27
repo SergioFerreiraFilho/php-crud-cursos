@@ -9,5 +9,4 @@ class Curso
     public string $nome;
     public int $cargaHoraria;
     public string $categoria;
-    public bool $status;
 }

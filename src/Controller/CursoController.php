@@ -4,25 +4,103 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class CursoController
+use App\Model\Curso;
+use App\Repository\CursoRepository;
+use Dompdf\Dompdf;
+use Exception;
+
+class CursoController extends AbstractController
 {
     public function listar(): void
     {
-        echo "Pagina de listar";
+        $rep = new CursoRepository();
+
+        $cursos = $rep->buscarTodos();
+
+        $this->render('cursos/listar', [
+            'cursos' => $cursos,
+        ]);
     }
 
     public function cadastrar(): void
     {
-        echo "Pagina de cadastrar";
-    }
+        if (true === empty($_POST)) {
+            $this->render('cursos/cadastrar');
+            return;
+        }
 
-    public function excluir(): void
-    {
-        echo "Pagina de excluir";
+        $curso = new Curso();
+        $curso->nome = $_POST['nome'];
+        $curso->cargaHoraria = $_POST['cargaHoraria'];
+        $curso->categoria = $_POST['categoria'];
+
+        $rep = new CursoRepository();
+
+        try {
+            $rep->inserir($curso);
+        } catch (Exception $exception) {
+            if (true === str_contains($exception->getMessage(), 'nome')) {
+                die('Nome ja existe');
+            }
+
+
+            die('Vish, aconteceu um erro');
+        }
+
+        $this->redirect('/cursos/listar');
     }
 
     public function editar(): void
     {
-        echo "Pagina de editar";
+        $id = $_GET['id'];
+        $rep = new AlunoRepository();
+        $aluno = $rep->buscarUm($id);
+        $this->render('cursos/editar', [$curso]);
+        if (false === empty($_POST)) {
+            $curso->nome = $_POST['nome'];
+            $curso->cargaHoraria = $_POST['cargaHoraria'];
+            $curso->categoria = $_POST['categoria'];
+    
+            try {
+                $rep->atualizar($curso, $id);
+            } catch (Exception $exception) {
+                if (true === str_contains($exception->getMessage(), 'nome')) {
+                    die('Nome ja existe');
+                }
+    
+    
+                die('Vish, aconteceu um erro');
+            }
+            $this->redirect('/cursos/listar');
+        }
+    }
+
+    public function excluir(): void
+    {
+        // $this->render('aluno/excluir');
+        $id = $_GET['id'];
+        $rep = new CursoRepository();
+        $rep->excluir($id);
+        $this->redirect('/cursos/listar');
+
+    }
+
+    public function relatorio(): void
+    {
+        $hoje = date('d/m/Y');
+
+        $design = "
+            <h1>Relatorio de Alunos</h1>
+            <hr>
+            <em>Gerado em {$hoje}</em>
+        ";
+
+        $dompdf = new Dompdf();
+        $dompdf->setPaper('A4', 'portrait'); // tamanho da pagina
+
+        $dompdf->loadHtml($design); //carrega o conteudo do PDF
+
+        $dompdf->render(); //aqui renderiza 
+        $dompdf->stream(); //é aqui que a magica acontece
     }
 }
