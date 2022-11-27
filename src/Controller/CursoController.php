@@ -53,8 +53,8 @@ class CursoController extends AbstractController
     public function editar(): void
     {
         $id = $_GET['id'];
-        $rep = new AlunoRepository();
-        $aluno = $rep->buscarUm($id);
+        $rep = new CursosRepository();
+        $curso = $rep->buscarUm($id);
         $this->render('cursos/editar', [$curso]);
         if (false === empty($_POST)) {
             $curso->nome = $_POST['nome'];
