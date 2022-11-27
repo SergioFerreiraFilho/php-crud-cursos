@@ -1,0 +1,24 @@
+<?php
+    $cursos = $dados[0];
+?>
+<section class="mt-3 card card-body">
+    <h1>Editar Curso</h1>
+
+    <div class="row">
+        <div class="col">
+            <form action="" method="POST">
+                <label for="nome">Nome</label>
+                <input name="nome" type="text" id="nome" class="form-control mb-3" value="<?php echo $cursos->nome; ?>">
+
+                <label for="categoria">Categoria</label>
+                <input name="categoria" type="text" id="categoria" class="form-control mb-3" value="<?php echo $cursos->categoria; ?>">
+
+                <label for="cargaHoraria">Carga Horaria</label>
+                <input name="cargaHoraria" type="number" id="cargaHoraria" class="form-control mb-3" value="<?php echo $cursos->cargaHoraria; ?>">
+
+                <button class="btn btn-primary">Pronto</button>
+            </form>
+        </div>
+        <div class="col"></div>
+    </div>
+</section>

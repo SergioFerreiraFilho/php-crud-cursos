@@ -31,8 +31,8 @@ class CursoController extends AbstractController
 
         $curso = new Curso();
         $curso->nome = $_POST['nome'];
-        $curso->cargaHoraria = $_POST['cargaHoraria'];
         $curso->categoria = $_POST['categoria'];
+        $curso->cargaHoraria = $_POST['cargaHoraria'];
 
         $rep = new CursoRepository();
 
@@ -53,7 +53,7 @@ class CursoController extends AbstractController
     public function editar(): void
     {
         $id = $_GET['id'];
-        $rep = new CursosRepository();
+        $rep = new CursoRepository();
         $curso = $rep->buscarUm($id);
         $this->render('cursos/editar', [$curso]);
         if (false === empty($_POST)) {

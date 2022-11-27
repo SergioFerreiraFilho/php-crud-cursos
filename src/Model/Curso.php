@@ -7,6 +7,6 @@ namespace App\Model;
 class Curso
 {
     public string $nome;
-    public int $cargaHoraria;
+    public string $cargaHoraria;
     public string $categoria;
 }

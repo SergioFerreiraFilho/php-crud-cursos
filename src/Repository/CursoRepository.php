@@ -45,7 +45,7 @@ class CursoRepository implements RepositoryInterface
     {
 
         $sql = "INSERT INTO " . self::TABLE . 
-            "(nome) " . 
+            "(nome, cargaHoraria, categoria) " . 
             "VALUES (
                 '{$dados->nome}', 
                 '{$dados->cargaHoraria}', 
