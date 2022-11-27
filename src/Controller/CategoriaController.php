@@ -8,6 +8,8 @@ use App\Model\Categoria;
 
 use App\Repository\CategoriaRepository;
 
+use Exception;
+
 class CategoriaController extends AbstractController
 {
     public function listar(): void
@@ -23,16 +25,56 @@ class CategoriaController extends AbstractController
 
     public function cadastrar(): void
     {
-        echo "Pagina de cadastrar";
+        if (true === empty($_POST)) {
+            $this->render('categoria/cadastrar');
+            return;
+        }
+
+        $categoria = new Categoria();
+        $categoria->nome = $_POST['nome'];
+
+        $rep = new CategoriaRepository();
+
+        try {
+            $rep->inserir($categoria);
+        } catch (Exception $exception) {
+            if (true === str_contains($exception->getMessage(), 'nome')) {
+                die('Nome já existe');
+            }
+            die('Vish, aconteceu um erro');
+        }
+
+        $this->redirect('/categorias/listar');
     }
 
     public function excluir(): void
     {
-        echo "Pagina de excluir";
+        $id = $_GET['id'];
+        $rep = new CategoriaRepository();
+        $rep->excluir($id);
+        $this->redirect("/categorias/listar");
     }
 
     public function editar(): void
     {
-        echo "Pagina de editar";
+        $id = $_GET['id'];
+        $rep = new CategoriaRepository();
+        $categoria = $rep->buscarUm($id);
+        $this->render('Categoria/editar', [$categoria]);
+        if (false === empty($_POST)) {
+            $categoria->nome = $_POST['nome'];
+    
+            try {
+                $rep->atualizar($categoria, $id);
+            } catch (Exception $exception) {
+                if (true === str_contains($exception->getMessage(), 'nome')) {
+                    die('Nome ja existe');
+                }
+    
+    
+                die('Vish, aconteceu um erro');
+            }
+            $this->redirect('/categorias/listar');
+        }
     }
 }

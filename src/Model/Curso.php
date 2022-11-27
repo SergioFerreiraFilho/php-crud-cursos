@@ -8,7 +8,6 @@ class Curso
 {
     public string $nome;
     public int $cargaHoraria;
-    public string $descricao;
+    public string $categoria;
     public bool $status;
-    public array $ementa;
 }
