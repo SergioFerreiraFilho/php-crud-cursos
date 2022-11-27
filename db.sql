@@ -40,17 +40,15 @@ VALUES
 
 CREATE TABLE tb_categorias (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    tipo VARCHAR(45) NOT NULL,
-    formacao VARCHAR(45) NOT NULL,
-    status TINYINT NOT NULL
+    nome VARCHAR(45) NOT NULL
 );
 
 INSERT INTO tb_categorias
-(tipo, formacao, status)
+(nome)
 VALUES
-('Linguagem','FullStack', true),
-('Edição','Designer', true),
-('Publicidade','Marketing', true);
+('FullStack'),
+('Designer'),
+('Marketing');
 
 
 
