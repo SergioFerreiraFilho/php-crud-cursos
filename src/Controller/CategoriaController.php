@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class CategoriaController
+use App\Model\Categoria;
+
+use App\Repository\CategoriaRepository;
+
+class CategoriaController extends AbstractController
 {
     public function listar(): void
     {
-        echo "Pagina de listar";
+        $rep = new CategoriaRepository();
+
+        $categorias = $rep->buscarTodos();
+
+        $this->render('categoria/listar', [
+            'categorias' => $categorias,
+        ]);
     }
 
     public function cadastrar(): void
