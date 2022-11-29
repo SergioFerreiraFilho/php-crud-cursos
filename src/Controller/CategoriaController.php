@@ -10,8 +10,16 @@ use App\Repository\CategoriaRepository;
 
 use Exception;
 
+use Dompdf\Dompdf;
+
 class CategoriaController extends AbstractController
 {
+    private CategoriaRepository $repository;
+    public function __construct()
+    {
+        $this->repository = new CategoriaRepository();
+    }
+    
     public function listar(): void
     {
         $rep = new CategoriaRepository();
@@ -76,5 +84,44 @@ class CategoriaController extends AbstractController
             }
             $this->redirect('/categorias/listar');
         }
+    }
+    private function renderizar(iterable $categorias)
+    {
+        $resultado = '';
+        foreach($categorias as $categoria){
+            $resultado .= "
+            <tr>
+                <td>{$categoria->id}</td>
+                <td>{$categoria->nome}</td>
+            </tr>";
+        }
+        return $resultado;
+    }
+    public function relatorio(): void
+    {
+        $hoje = date('d/m/Y');
+        $categorias = $this->repository->buscarTodos();
+        $design =  "
+            <h1>Relatorio de Alunos</h1>
+            <hr>
+            <em>Gerado em {$hoje}</em>
+            <br>
+            <table border='1' width='100%' style='margin-top: 30px;'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ".$this->renderizar($categorias)."
+                </tbody>
+            </table>
+        ";
+        $dompdf = new Dompdf();
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->loadHtml($design);
+        $dompdf->render();
+        $dompdf->stream('relatorio-categoria.pdf', ['Attachment'=> 0,]);
     }
 }

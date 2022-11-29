@@ -10,7 +10,12 @@ use Dompdf\Dompdf;
 
 class ProfessorController extends AbstractController
 {
-    // public const REPOSITORY = new ProfessorRepository();
+    private ProfessorRepository $repository;
+
+    public function __construct()
+    {
+        $this->repository = new ProfessorRepository();
+    }
 
     public function listar(): void
     {
@@ -40,22 +45,52 @@ class ProfessorController extends AbstractController
         
     }
 
+    private function redirecionar(iterable $professores){
+        $resultado = '';
+        foreach ($professores as $professor) {
+        $resultado .= "
+            <tr>
+                <td>{$professor->id}</td>
+                <td>{$professor->nome}</td>
+                <td>{$professor->endereco}</td>
+                <td>{$professor->formacao}</td>
+                <td>{$professor->status}</td>
+                <td>{$professor->cpf}</td>
+            </tr>";
+            }
+            return $resultado;
+    }
+
     public function relatorio(): void
     {
         $hoje = date('d/m/Y');
-
+        $professor = $this->repository->buscarTodos();
         $design = "
-            <h1>Relatorio de Professores</h1>
-            <hr>
-            <em>Gerado em {$hoje}</em>
+        <h1>Relatorio de Professores</h1>
+        <hr>
+        <em>Gerando em {$hoje}</em>
+        <hr>
+        <table border='1' width='100%' style='margin-top: 30px;'>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th>Formação</th>
+                    <th>Status</th>
+                    <th>CPF</th>
+                </tr>
+            </thead>
+            <tbody>
+            ".$this->redirecionar($professor)."
+            </tbody>
+        </table>
         ";
 
         $dompdf = new Dompdf();
-        $dompdf->setPaper('A4', 'portrait'); // tamanho da pagina
-
-        $dompdf->loadHtml($design); //carrega o conteudo do PDF
-
-        $dompdf->render(); //aqui renderiza 
-        $dompdf->stream(); //é aqui que a magica acontece
+        $dompdf->setPaper('A4', 'portrait'); 
+        $dompdf->loadHtml(($design)); 
+        $dompdf->render();
+        $dompdf->stream('Relatorio-Professores.pdf', ['Attachment' => 0]); 
     }
 }

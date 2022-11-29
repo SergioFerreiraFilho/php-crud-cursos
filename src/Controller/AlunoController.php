@@ -7,10 +7,17 @@ namespace App\Controller;
 use App\Model\Aluno;
 use App\Repository\AlunoRepository;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use Exception;
 
 class AlunoController extends AbstractController
 {
+    private AlunoRepository $repository;
+    public function __construct()
+    {
+        $this->repository = new AlunoRepository();
+    }
+    
     public function listar(): void
     {
         $rep = new AlunoRepository();
@@ -95,22 +102,49 @@ class AlunoController extends AbstractController
 
     }
 
+    private function renderizar(iterable $alunos)
+    {
+        $resultado = '';
+        foreach ($alunos as $aluno) {
+        $resultado .= "
+            <tr>
+            <td>{$aluno->id}</td>
+            <td>{$aluno->nome}</td>
+            <td>{$aluno->matricula}</td>
+            <td>{$aluno->cpf}</td>
+            <td>{$aluno->email}</td>
+            </tr>
+            ";
+            }
+            return $resultado;
+        }
     public function relatorio(): void
     {
         $hoje = date('d/m/Y');
-
-        $design = "
+        $alunos = $this->repository->buscarTodos();
+        $design =  "
             <h1>Relatorio de Alunos</h1>
-            <hr>
             <em>Gerado em {$hoje}</em>
+            <br>
+            <table border='1' width='100%' style='margin-top: 30px;'>
+                <thead>
+                    <tr>
+                    <th>#ID</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Carga Horaria</th>
+                    <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ".$this->renderizar($alunos)."
+                </tbody>
+            </table>
         ";
-
         $dompdf = new Dompdf();
         $dompdf->setPaper('A4', 'portrait'); // tamanho da pagina
-
         $dompdf->loadHtml($design); //carrega o conteudo do PDF
-
         $dompdf->render(); //aqui renderiza 
-        $dompdf->stream(); //é aqui que a magica acontece
+        $dompdf->stream('relatorio-aluno.pdf',['Attachment' => 0,]); //é aqui que a magica acontece
     }
 }
