@@ -102,49 +102,57 @@ class AlunoController extends AbstractController
 
     }
 
-    private function renderizar(iterable $alunos)
+    private function redirecionar(iterable $alunos)
     {
         $resultado = '';
         foreach ($alunos as $aluno) {
-        $resultado .= "
+            $resultado .= "
             <tr>
-            <td>{$aluno->id}</td>
-            <td>{$aluno->nome}</td>
-            <td>{$aluno->matricula}</td>
-            <td>{$aluno->cpf}</td>
-            <td>{$aluno->email}</td>
-            </tr>
-            ";
-            }
-            return $resultado;
+                <td>{$aluno->id}</td>
+                <td>{$aluno->nome}</td>
+                <td>{$aluno->matricula}</td>
+                <td>{$aluno->email}</td>
+                <td>{$aluno->status}</td>
+                <td>{$aluno->genero}</td>
+                <td>{$aluno->dataNascimento}</td>
+                <td>{$aluno->cpf}</td>
+            </tr>";
         }
+        return $resultado;
+    }
+
     public function relatorio(): void
     {
         $hoje = date('d/m/Y');
-        $alunos = $this->repository->buscarTodos();
-        $design =  "
-            <h1>Relatorio de Alunos</h1>
-            <em>Gerado em {$hoje}</em>
-            <br>
-            <table border='1' width='100%' style='margin-top: 30px;'>
-                <thead>
-                    <tr>
-                    <th>#ID</th>
+        $aluno = $this->repository->buscarTodos();
+        $desing = "
+        <h1>Relatorio de Alunos</h1>
+        <hr>
+        <em>Gerando em {$hoje}</em>
+        <hr>
+        <table border='1' width='100%' style='margin-top: 30px;'>
+            <thead>
+                <tr>
+                    <th>ID</th>
                     <th>Nome</th>
-                    <th>Categoria</th>
-                    <th>Carga Horaria</th>
-                    <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                ".$this->renderizar($alunos)."
-                </tbody>
-            </table>
+                    <th>Matricula</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Gênero</th>
+                    <th>Data Nascimento</th>
+                    <th>CPF</th>
+                </tr>
+            </thead>
+            <tbody>
+            " . $this->redirecionar($aluno) . "
+            </tbody>
+        </table>
         ";
+
         $dompdf = new Dompdf();
+        $dompdf->loadHtml($desing); // carrega o conteudo do PDF
         $dompdf->setPaper('A4', 'portrait'); // tamanho da pagina
-        $dompdf->loadHtml($design); //carrega o conteudo do PDF
-        $dompdf->render(); //aqui renderiza 
-        $dompdf->stream('relatorio-aluno.pdf',['Attachment' => 0,]); //é aqui que a magica acontece
+        $dompdf->render(); // aqui renderiza
+        $dompdf->stream('Relatorio-Alunos.pdf', ['Attachment' => 0]); // é aqui que a magica acontece
     }
 }

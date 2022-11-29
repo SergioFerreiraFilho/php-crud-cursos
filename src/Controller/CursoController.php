@@ -36,6 +36,12 @@ class CursoController extends AbstractController
             return;
         }
 
+        
+        if (true === empty($_POST)) {
+            $this->render('cursos/cadastrar');
+            return;
+        }
+
         $curso = new Curso();
         $curso->nome = $_POST['nome'];
         $curso->categoria = $_POST['categoria'];
@@ -101,6 +107,7 @@ class CursoController extends AbstractController
             <td>{$curso->nome}</td>
             <td>{$curso->categoria}</td>
             <td>{$curso->cargaHoraria}</td>
+
             </tr>";
             }
             return $resultado;
