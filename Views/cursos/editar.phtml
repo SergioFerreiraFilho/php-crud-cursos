@@ -11,7 +11,14 @@
                 <input name="nome" type="text" id="nome" class="form-control mb-3" value="<?php echo $cursos->nome; ?>">
 
                 <label for="categoria">Categoria</label>
-                <input name="categoria" type="text" id="categoria" class="form-control mb-3" value="<?php echo $cursos->categoria; ?>">
+                <select name="categoria" class="form-control mb-3">
+                    <?php
+                        foreach($categorias as $categoria){
+                            echo "
+                                <option value='{$categoria->id}'>{$categoria->nome}</option>
+                            ";
+                        }
+                    ?>
 
                 <label for="cargaHoraria">Carga Horaria</label>
                 <input name="cargaHoraria" type="number" id="cargaHoraria" class="form-control mb-3" value="<?php echo $cursos->cargaHoraria; ?>">

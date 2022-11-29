@@ -95,14 +95,51 @@ class AlunoController extends AbstractController
 
     }
 
+    private function redirecionar(iterable $alunos)
+    {
+        $resultado = '';
+        foreach ($alunos as $aluno) {
+            $resultado .= "
+            <tr>
+                <td>{$aluno->id}</td>
+                <td>{$aluno->nome}</td>
+                <td>{$aluno->matricula}</td>
+                <td>{$aluno->email}</td>
+                <td>{$aluno->status}</td>
+                <td>{$aluno->genero}</td>
+                <td>{$aluno->dataNascimento}</td>
+                <td>{$aluno->cpf}</td>
+            </tr>";
+        }
+        return $resultado;
+    }
+
     public function relatorio(): void
     {
         $hoje = date('d/m/Y');
-
-        $design = "
-            <h1>Relatorio de Alunos</h1>
-            <hr>
-            <em>Gerado em {$hoje}</em>
+        $aluno = $this->repository->buscarTodos();
+        $desing = "
+        <h1>Relatorio de Alunos</h1>
+        <hr>
+        <em>Gerando em {$hoje}</em>
+        <hr>
+        <table border='1' width='100%' style='margin-top: 30px;'>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Matricula</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Gênero</th>
+                    <th>Data Nascimento</th>
+                    <th>CPF</th>
+                </tr>
+            </thead>
+            <tbody>
+            " . $this->redirecionar($aluno) . "
+            </tbody>
+        </table>
         ";
 
         $dompdf = new Dompdf();
