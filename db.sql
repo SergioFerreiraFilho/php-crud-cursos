@@ -52,15 +52,21 @@ VALUES
 
 CREATE TABLE tb_cursos (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(45) NOT NULL,
-    cargaHoraria VARCHAR(45) NOT NULL,
-    categoria VARCHAR(100) NOT NULL
+    nome VARCHAR(50) NOT NULL,
+    cargaHoraria VARCHAR(50) NOT NULL,
+    descricao VARCHAR(100) NOT NULL,
+    status TINYINT NOT NULL,
+    categoria_id INT NOT NULL,
+    FOREIGN KEY (categoria_id) REFERENCES tb_categorias(id)
 );
 
-INSERT INTO tb_cursos 
-(nome, cargaHoraria, categoria)
+INSERT INTO tb_cursos
+(nome, cargaHoraria, descricao, status, categoria_id)
 VALUES
-('PHP', '60', 'Fullstack'),
-('Javascript', '60', 'Designer'),
-('HTML', '60', 'Publicidade');
+('FullStack','192',' programador',1,3);
+
+SELECT *
+FROM tb_cursos
+INNER JOIN tb_categorias
+ON tb_cursos.categoria_id = tb_categorias.id;
 

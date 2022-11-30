@@ -8,5 +8,7 @@ class Curso
 {
     public string $nome;
     public string $cargaHoraria;
-    public string $categoria;
+    public string $descricao;
+    public int $status;
+    public int $categoria_id;
 }

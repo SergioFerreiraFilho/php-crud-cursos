@@ -22,18 +22,16 @@ class CursoRepository implements RepositoryInterface
 
     public function buscarTodos(): iterable
     {
-        $conexao = DatabaseConnection::abrirConexao();
+        $sql = "SELECT * FROM tb_categorias INNER JOIN tb_cursos ON tb_cursos.categoria_id = tb_categorias.id";
 
-        $sql = "SELECT * FROM ".self::TABLE;
-
-        $query = $conexao->query($sql);
+        $query = $this->pdo->query($sql);
 
         $query->execute();
 
         return $query->fetchAll(PDO::FETCH_CLASS, Curso::class);
     }
 
-    public function buscarUm(string $id): ?object
+    public function buscarUm(string $id): object
     {
         $sql = "SELECT * FROM ".self::TABLE." WHERE id = '{$id}'";
         $query = $this->pdo->query($sql);
@@ -43,14 +41,9 @@ class CursoRepository implements RepositoryInterface
 
     public function inserir(object $dados): object
     {
-
         $sql = "INSERT INTO " . self::TABLE . 
-            "(nome, cargaHoraria, categoria) " . 
-            "VALUES (
-                '{$dados->nome}', 
-                '{$dados->cargaHoraria}', 
-                '{$dados->categoria}'
-            );";
+        "(nome, cargaHoraria, descricao, status, categoria_id) " . 
+        "VALUES ('{$dados->nome}', '{$dados->cargaHoraria}', '{$dados->descricao}',1,'{$dados->categoria_id}');";
 
         $this->pdo->query($sql);
 
@@ -61,10 +54,11 @@ class CursoRepository implements RepositoryInterface
     {
         $sql = "UPDATE " . self::TABLE . 
         " SET 
-        nome='{$novosDados->nome}',
-        cargaHoraria='{$novosDados->cargaHoraria}',
-        categoria='{$novosDados->categoria}'
-    WHERE id = '{$id}';";
+        nome='{$novosDados->nome}', 
+        cargaHoraria='{$novosDados->cargaHoraria}', 
+        descricao='{$novosDados->descricao}', 
+        categoria_id='{$novosDados->categoria_id}'
+        WHERE id = '{$id}';";
 
     $this->pdo->query($sql);
 

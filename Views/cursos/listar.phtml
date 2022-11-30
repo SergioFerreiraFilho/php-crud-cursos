@@ -10,22 +10,25 @@
     <table class="table table-striped table-hover mt-4">
         <thead class="table-dark">
             <tr>
-                <th>#ID</th>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Carga Horaria</th>
-                <th>Ações</th>
+            <th>#ID</th>
+            <th>Nome</th>
+            <th>Carga Horaria</th>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             <?php
                     foreach ($cursos ?? [] as $curso) {
-                        echo "
+                        var_dump($curso);
+                        echo "                        
                             <tr>
                                 <td>{$curso->id}</td>
                                 <td>{$curso->nome}</td>
-                                <td>{$curso->categoria}</td>
                                 <td>{$curso->cargaHoraria}</td>
+                                <td>{$curso->descricao}</td>
+                                <td>{$curso->categoria_id}</td>
                                 <td>
                                     <a href='/cursos/editar?id={$curso->id}' class='btn btn-outline-warning btn-sm'>Editar</a>
                                     <a href='/cursos/excluir?id={$curso->id}' class='btn btn-outline-danger btn-sm'>Excluir</a>
