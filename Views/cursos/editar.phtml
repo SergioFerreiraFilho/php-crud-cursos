@@ -18,21 +18,21 @@
                 <label for="categoria">Categoria: </label>
                 <select name="categoria" id="categoria" class="form-select mb-3">
                     <?php
-                    foreach($categorias as $cadaCategoria){
-                        if($curso->categoria_id == $cadaCategoria->id){
+                    foreach($categorias as $categoria){
+                        if($curso->categoria_id == $categoria->id){
                             echo "
-                            <option value='{$cadaCategoria->id}' selected>{$cadaCategoria->nome}</option>
+                            <option value='{$categoria->id}' selected>{$categoria->nome}</option>
                             ";
                         }
                         else{
                             echo "
-                            <option value='{$cadaCategoria->id}'>{$cadaCategoria->nome}</option>
+                            <option value='{$categoria->id}'>{$categoria->nome}</option>
                             ";
                         }
                     }
                     ?>
                 </select>
-                <button class="btn btn-outline-dark w-100">Enviar</button>
+                <button class="btn btn-primary">Editar</button>
             </form>
         </div>
         <div class="col"></div>

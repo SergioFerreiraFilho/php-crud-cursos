@@ -22,9 +22,11 @@ class CursoRepository implements RepositoryInterface
 
     public function buscarTodos(): iterable
     {
-        $sql = "SELECT * FROM tb_categorias INNER JOIN tb_cursos ON tb_cursos.categoria_id = tb_categorias.id";
+        $conexao = DatabaseConnection::abrirConexao();
 
-        $query = $this->pdo->query($sql);
+        $sql = "SELECT * FROM tb_categorias INNER JOIN tb_cursos ON tb_categorias.id = tb_cursos.categoria_id";
+
+        $query = $conexao->query($sql);
 
         $query->execute();
 
